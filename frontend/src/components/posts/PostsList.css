@@ -1,0 +1,26 @@
+.posts{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.posts div{
+    background-color: darkslategray;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid black;
+    margin: 0 0 10px 0;
+    width: 30%;
+}
+.posts div a{
+    color: white;
+    margin: 0 0 10px 0;
+}
+
+.post-edit{
+    float: left;
+}
+
+.post-delete{
+    float: right;
+}

@@ -28,7 +28,17 @@ function ShowPost() {
         <div>
             <h2>{post.title}</h2>
             <p>{post.body}</p>
-            <Link to="/">Back to Posts</Link>
+            <ul>
+                <li>
+                    <Link to={`/`}> Back to posts </Link>
+                </li>
+                <li>|</li>
+                <li>
+                    <Link to={`/posts/${post.id}/edit`}>
+                        Edit
+                    </Link>
+                </li>
+            </ul>
         </div>
     );
 }
