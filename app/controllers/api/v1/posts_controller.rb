@@ -3,7 +3,7 @@ class Api::V1::PostsController < ApplicationController
 
   # GET /posts
   def index
-    @posts = Post.order(created_at: :desc)
+    @posts = Post.where.not(title: [nil, '']).order(created_at: :desc)
 
     render json: @posts
   end

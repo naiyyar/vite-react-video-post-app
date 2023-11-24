@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { API_URL } from '../../constant';
 import { Link } from 'react-router-dom';
+import './PostsList.css';
 
 const PostsList = () => {
     const [posts, setPosts] = useState([]);
@@ -19,7 +20,7 @@ const PostsList = () => {
     }, []);
 
     return (
-        <div>
+        <div className='posts'>
             {posts.map(post => (
                 <div key={post.id} >
                     <h2>
@@ -27,7 +28,14 @@ const PostsList = () => {
                             {post.title}
                         </Link>
                     </h2>
-                    <p>{post.body}</p>
+                    <Link to={`/posts/${post.id}/edit`} className='post-edit'>
+                        Edit
+                    </Link>
+
+                    <Link to={`/posts/${post.id}`} className='post-delete'>
+                        Delete
+                    </Link>
+
                 </div>
             ))}
         </div>
