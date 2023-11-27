@@ -1,37 +1,35 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { API_URL } from '../../constant';
 import { Link } from 'react-router-dom';
+import { fetchPosts, deletePost as deleteCurrentPost } from '../../services/PostService';
 import './PostsList.css';
 
-const PostsList = () => {
+function PostsList() {
     const [posts, setPosts] = useState([]);
     const [, setError] = useState(null);
+    const [, setLoading] = useState(true);
 
     useEffect(() => {
-        async function fetchData() {
-            const res = await fetch(API_URL);
-            res
-                .json()
-                .then(res => setPosts(res))
-                .catch(err => setError(err));
+        async function loadPosts() {
+            try {
+                const data = await fetchPosts();
+                console.log(data);
+                setPosts(data);
+                setLoading(false);
+            } catch(e) {
+                setError(e);
+                setLoading(false);
+            }
         }
-        fetchData();
+        loadPosts();
     }, []);
 
     const deletePost = async (id) => {
         try {
-            const response = await fetch(`${API_URL}/${id}`, {
-                method: 'DELETE',
-            });
-            
-            if(!response.ok) {
-                throw new Error(response.status);
-            } else {
-                setPosts(posts.filter((post) => post.id !== id));
-            }
+            await deleteCurrentPost(id);
+            setPosts(posts.filter((post) => post.id !== id));
          } catch (error) {
-            console.error(error);
+            console.error('Failed to delete the post', error);
         }
     }
 

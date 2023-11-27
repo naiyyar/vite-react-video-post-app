@@ -1,17 +1,17 @@
 import React, {useState, useEffect} from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { API_URL } from '../../constant';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { deletePost as deleteCurrentPost, getPost as getCurrentPost } from '../../services/PostService'; 
 
 function ShowPost() {
     const [post, setPost] = useState(null);
     const {id} = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getPost = async () => {
             try {
-                const res = await fetch(`${API_URL}/${id}`);
-                const json = await res.json();
-                setPost(json);
+                const data = await getCurrentPost(id);
+                setPost(data);
             }
             catch (error) {
                 console.log(error);
@@ -19,6 +19,15 @@ function ShowPost() {
         };
         getPost();
     }, [id]);
+
+    const deletePost = async (id) => {
+        try {
+            await deleteCurrentPost(id);
+            navigate('/');
+         } catch (error) {
+            console.error('Failed to delete the post', error);
+        }
+    }
 
     if (!post) {
         return <div>Loading...</div>;
@@ -37,6 +46,10 @@ function ShowPost() {
                     <Link to={`/posts/${post.id}/edit`}>
                         Edit
                     </Link>
+                    {' | '}
+                    <button to={`/posts/${post.id}`} onClick={() => deletePost(post.id)}>
+                        Delete
+                    </button>
                 </li>
             </ul>
         </div>
